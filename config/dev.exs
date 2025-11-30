@@ -10,6 +10,16 @@ config :jour_dash, JourDash.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
+config :journey, Journey.Repo,
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  database: "journey_jourdash_dev",
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
+  log: false,
+  pool_size: 10
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -72,6 +82,7 @@ config :jour_dash, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"
+config :journey, log_level: :warning
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

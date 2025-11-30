@@ -8,8 +8,11 @@
 import Config
 
 config :jour_dash,
-  ecto_repos: [JourDash.Repo],
+  ecto_repos: [JourDash.Repo, Journey.Repo],
   generators: [timestamp_type: :utc_datetime]
+
+# Use a small background sweeper period, to help simulate interactive GPS updates.
+config :journey, :background_sweeper, period_seconds: 5
 
 # Configure the endpoint
 config :jour_dash, JourDashWeb.Endpoint,

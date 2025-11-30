@@ -41,6 +41,21 @@ if config_env() == :prod do
     # pool_count: 4,
     socket_options: maybe_ipv6
 
+  database_journey_url =
+    System.get_env("DATABASE_JOURNEY_URL") ||
+      raise """
+        environment variable DATABASE_JOURNEY_URL is missing.
+        For example: ecto://USER:PASS@HOST/DATABASE
+      """
+
+  config :jour_dash_journey, Journey.Repo,
+    # ssl: true,
+    url: database_journey_url,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    # For machines with several cores, consider starting multiple pools of `pool_size`
+    # pool_count: 4,
+    socket_options: maybe_ipv6
+
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want

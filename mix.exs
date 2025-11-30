@@ -40,6 +40,7 @@ defmodule JourDash.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:journey, "~> 0.10.40"},
       {:phoenix, "~> 1.8.2"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.13"},
