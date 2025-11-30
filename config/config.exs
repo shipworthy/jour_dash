@@ -11,6 +11,11 @@ config :jour_dash,
   ecto_repos: [JourDash.Repo, Journey.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+# Register the graph with Journey
+config :journey, :graphs, [
+  &JourDash.Trip.Graph.new/0
+]
+
 # Use a small background sweeper period, to help simulate interactive GPS updates.
 config :journey, :background_sweeper, period_seconds: 5
 
