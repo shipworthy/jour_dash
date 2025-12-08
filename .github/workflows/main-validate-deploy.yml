@@ -1,0 +1,133 @@
+name: "main: validate, build, deploy"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GOOGLE_ARTIFACT_REGISTRY_LOCATION: ${{ secrets.GCP_REGION }}
+  GOOGLE_ARTIFACT_REGISTRY_NAME: docker-images
+  SERVICE: jourdash
+  REGION: ${{ secrets.GCP_REGION }}
+  LATEST_TAG: main_latest
+
+jobs:
+  build_and_publish_docker_image:
+    name: Build and Publish Docker Image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Docker Auth
+      id: docker-auth
+      uses: 'docker/login-action@v3'
+      with:
+          username: _json_key
+          password: '${{ secrets.GCP_JSON_KEY }}'
+          registry: '${{ env.GOOGLE_ARTIFACT_REGISTRY_LOCATION }}-docker.pkg.dev'
+
+    - name: Build
+      run: |-
+        DOCKER_BUILDKIT=1 docker build \
+          --build-arg COMMIT_SHA=${{ github.sha }} \
+          --tag "${{ env.GOOGLE_ARTIFACT_REGISTRY_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GOOGLE_ARTIFACT_REGISTRY_NAME }}/${{ env.SERVICE }}:${{ github.sha }}" \
+          ./
+
+    - name: Build and Push Container
+      run: |-
+        # push image to the registry.
+        docker push "${{ env.GOOGLE_ARTIFACT_REGISTRY_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GOOGLE_ARTIFACT_REGISTRY_NAME }}/${{ env.SERVICE }}:${{ github.sha }}"
+        docker build --build-arg COMMIT_SHA=${{ github.sha }} -t "${{ env.GOOGLE_ARTIFACT_REGISTRY_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GOOGLE_ARTIFACT_REGISTRY_NAME }}/${{ env.SERVICE }}:${{ env.LATEST_TAG }}" ./
+        docker push "${{ env.GOOGLE_ARTIFACT_REGISTRY_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GOOGLE_ARTIFACT_REGISTRY_NAME }}/${{ env.SERVICE }}:${{ env.LATEST_TAG }}"
+
+
+  validate_changes:
+    name: Run Linters and Tests
+    runs-on: ubuntu-latest
+    services:
+      pg:
+        image: postgres:16.4-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: "jour_dash_test"
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OTP and Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: "1.19.3"
+          otp-version: "28.2"
+      - name: Manage dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+      - name: Setup
+        env:
+          MIX_ENV: test
+          JOURNEY_BUILD_KEY: '${{ secrets.JOURNEY_BUILD_KEY }}'
+          COMMIT_SHA: ${{ github.sha }}
+        run: mix setup
+      - name: Lint
+        env:
+          MIX_ENV: test
+          JOURNEY_BUILD_KEY: '${{ secrets.JOURNEY_BUILD_KEY }}'
+          COMMIT_SHA: ${{ github.sha }}
+        run: mix format --check-formatted && mix credo
+      - name: Test
+        env:
+          MIX_ENV: test
+          JOURNEY_BUILD_KEY: '${{ secrets.JOURNEY_BUILD_KEY }}'
+          COMMIT_SHA: ${{ github.sha }}
+        run: mix test
+
+  deploy_cloud_run:
+    name: Deploy Cloud Run Service
+    needs:
+      - build_and_publish_docker_image
+      - validate_changes
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Docker Auth
+      id: docker-auth
+      uses: 'docker/login-action@v3'
+      with:
+          username: _json_key
+          password: '${{ secrets.GCP_JSON_KEY }}'
+          registry: '${{ env.GOOGLE_ARTIFACT_REGISTRY_LOCATION }}-docker.pkg.dev'
+
+    - name: Authenticate to Google Cloud
+      id: auth
+      uses: google-github-actions/auth@v2
+      with:
+          credentials_json: '${{ secrets.GCP_JSON_KEY }}'
+
+    - name: Deploy to Cloud Run
+      id: deploy
+      uses: google-github-actions/deploy-cloudrun@v2
+      with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          image: ${{ env.GOOGLE_ARTIFACT_REGISTRY_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GOOGLE_ARTIFACT_REGISTRY_NAME }}/${{ env.SERVICE }}:${{ github.sha }}
+
+    - name: Print Service URL
+      run: echo ${{ steps.deploy.outputs.url }}
