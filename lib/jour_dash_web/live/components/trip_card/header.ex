@@ -7,7 +7,9 @@ defmodule JourDashWeb.Live.Components.TC.Header do
     ~H"""
     <h1 class="mb-2 pb-2 flex items-center">
       <span id={"trip-id-on-card-#{@trip}-id"}>
-        <span class="text-xs font-mono border-1 rounded-md p-1 font-light bg-base-100">{String.slice(@trip, 0, 12)}</span>
+        <span class="text-xs font-mono border-1 rounded-md p-1 font-light bg-base-100">
+          {String.slice(@trip, 0, 12)}
+        </span>
       </span>
       <span
         id={"running-status-on-card-#{@trip}-id"}

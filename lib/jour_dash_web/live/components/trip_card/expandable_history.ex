@@ -15,7 +15,10 @@ defmodule JourDashWeb.Live.Components.TC.ExpandableHistory do
       <.icon :if={@expanded?} name="hero-chevron-up" class="w-6 h-6" />
     </div>
 
-    <div :if={@trip_values.trip_history != nil and @expanded?} class="text-sm font-mono border-t-1 my-5 py-4">
+    <div
+      :if={@trip_values.trip_history != nil and @expanded?}
+      class="text-sm font-mono border-t-1 my-5 py-4"
+    >
       History:
       <%= for %{"node" => node, "timestamp" => timestamp, "value" => value} <- @trip_values.trip_history |> Enum.reverse() do %>
         <div class="text-xs my-1 font-mono">

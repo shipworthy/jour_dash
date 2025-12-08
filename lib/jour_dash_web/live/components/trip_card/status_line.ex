@@ -14,7 +14,10 @@ defmodule JourDashWeb.Live.Components.TC.StatusLine do
           id={"location-#{@trip}-id"}
           class={[
             "font-mono",
-            (if @trip_values.trip_completed_at == nil, do: "badge badge-info", else: "badge badge-neutral")
+            if(@trip_values.trip_completed_at == nil,
+              do: "badge badge-info",
+              else: "badge badge-neutral"
+            )
           ]}
         >
           <.icon name="hero-map" class="w-4 h-4" /> {@trip_values.location_driver + 1}
@@ -24,7 +27,10 @@ defmodule JourDashWeb.Live.Components.TC.StatusLine do
           id={"activity-#{@trip}-id"}
           class={[
             "font-mono",
-            (if @trip_values.trip_completed_at == nil, do: "badge badge-info", else: "badge badge-neutral")
+            if(@trip_values.trip_completed_at == nil,
+              do: "badge badge-info",
+              else: "badge badge-neutral"
+            )
           ]}
         >
           <.icon name="hero-information-circle" class="w-4 h-4" /> {@trip_values.current_activity}
@@ -34,7 +40,10 @@ defmodule JourDashWeb.Live.Components.TC.StatusLine do
           id={"rating-reminder-#{@trip}-id"}
           class={[
             "font-mono",
-            (if @trip_values.trip_completed_at == nil, do: "badge badge-info", else: "badge badge-neutral")
+            if(@trip_values.trip_completed_at == nil,
+              do: "badge badge-info",
+              else: "badge badge-neutral"
+            )
           ]}
         >
           <.icon name="hero-information-circle" class="w-4 h-4" /> "rate this" reminder sent
@@ -44,7 +53,10 @@ defmodule JourDashWeb.Live.Components.TC.StatusLine do
           id={"rating-#{@trip}-id"}
           class={[
             "font-mono",
-            (if @trip_values.trip_completed_at == nil, do: "badge badge-info", else: "badge badge-neutral")
+            if(@trip_values.trip_completed_at == nil,
+              do: "badge badge-info",
+              else: "badge badge-neutral"
+            )
           ]}
         >
           <.icon name="hero-information-circle" class="w-4 h-4" /> rating: {@trip_values.rating}
