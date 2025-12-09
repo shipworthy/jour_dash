@@ -20,6 +20,8 @@ defmodule JourDash.Trip.Graph do
 
   Journey workflows are reactive, reliable, horizontally scalable, and
   durable.
+
+  Journey Documentation: https://hexdocs.pm/journey
   """
 
   import Journey.Node
