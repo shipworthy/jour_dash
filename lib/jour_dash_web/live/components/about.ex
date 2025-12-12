@@ -29,7 +29,7 @@ defmodule JourDashWeb.Live.Components.About do
           <a
             class="link link-primary"
             target="_blank"
-            href="https://github.com/markmark206/jour_dash"
+            href="https://github.com/shipworthy/jour_dash"
           >
             repo
           </a>
@@ -37,7 +37,7 @@ defmodule JourDashWeb.Live.Components.About do
           <a
             class="link link-primary"
             target="_blank"
-            href="https://github.com/markmark206/jour_dash/blob/main/lib/jour_dash/trip/graph.ex"
+            href="https://github.com/shipworthy/jour_dash/blob/main/lib/jour_dash/trip/graph.ex"
           >
             graph
           </a>
