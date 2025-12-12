@@ -222,4 +222,4 @@ iex(8)>
 
 * The Journey durable workflow at the core of this application: [./lib/jour_dash/trip/graph.ex](./lib/jour_dash/trip/graph.ex).
 * Journey docs: https://hexdocs.pm/journey/readme.html
-* Journey codebase: https://github.com/markmark206/journey
+* Journey codebase: https://github.com/shipworthy/journey
