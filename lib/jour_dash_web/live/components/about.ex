@@ -4,6 +4,8 @@ defmodule JourDashWeb.Live.Components.About do
   @moduledoc false
 
   def render(assigns) do
+    assigns = assign(assigns, :journey_version, Application.spec(:journey, :vsn) |> to_string())
+
     ~H"""
     <div id="about-service-id" class="mx-auto max-w-2xl flex justify-center px-3">
       <div class="text-sm justify-center font-mono border-1 rounded-md my-1 p-4 bg-base-100 w-full">
@@ -22,7 +24,7 @@ defmodule JourDashWeb.Live.Components.About do
             class="link link-primary"
             target="_blank"
             href="https://hexdocs.pm/journey/"
-          >Journey</a>'s reactive durable workflows and analytics.
+          >Journey</a>'s ({@journey_version}) reactive durable workflows and analytics.
         </div>
         <div class="py-1">
           JourDash source is available on Github:
