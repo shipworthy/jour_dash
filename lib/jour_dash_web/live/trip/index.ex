@@ -76,7 +76,10 @@ defmodule JourDashWeb.Live.Trip.Index do
 
   def handle_event("on_trip_card_chevron_down_click", _params, socket) do
     expanding? = not socket.assigns.expanded?
-    Logger.info("on_trip_card_chevron_down_click: #{if expanding?, do: "expanding", else: "collapsing"}")
+
+    Logger.info(
+      "on_trip_card_chevron_down_click: #{if expanding?, do: "expanding", else: "collapsing"}"
+    )
 
     introspection =
       if expanding?,
@@ -87,14 +90,20 @@ defmodule JourDashWeb.Live.Trip.Index do
       socket
       |> assign(:expanded?, expanding?)
       |> assign(:introspection, introspection)
-      |> assign(:introspection_expanded?, if(expanding?, do: socket.assigns.introspection_expanded?, else: false))
+      |> assign(
+        :introspection_expanded?,
+        if(expanding?, do: socket.assigns.introspection_expanded?, else: false)
+      )
 
     {:noreply, socket}
   end
 
   def handle_event("on_introspection_toggle_click", _params, socket) do
     expanding? = not socket.assigns.introspection_expanded?
-    Logger.info("on_introspection_toggle_click: #{if expanding?, do: "expanding", else: "collapsing"}")
+
+    Logger.info(
+      "on_introspection_toggle_click: #{if expanding?, do: "expanding", else: "collapsing"}"
+    )
 
     {:noreply, assign(socket, :introspection_expanded?, expanding?)}
   end

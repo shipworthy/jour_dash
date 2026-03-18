@@ -44,7 +44,7 @@ defmodule JourDashWeb.Live.Components.TC.ExpandableHistory do
         <.icon :if={@introspection_expanded?} name="hero-chevron-up" class="size-4" />
       </div>
       <pre :if={@introspection_expanded?} class="whitespace-pre-wrap break-words mt-2 text-xs">iex&gt; Journey.Tools.introspect("{@trip}") |&gt; IO.puts()
-{@introspection}</pre>
+    {@introspection}</pre>
     </div>
     """
   end
