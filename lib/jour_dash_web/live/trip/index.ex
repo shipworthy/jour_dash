@@ -21,6 +21,7 @@ defmodule JourDashWeb.Live.Trip.Index do
       assign(socket, connected?: connected?)
       |> assign(:expanded?, false)
       |> assign(:introspection, nil)
+      |> assign(:introspection_expanded?, false)
       |> assign(time_zone: time_zone)
       |> mount_with_connected(params, session, connected?)
 
@@ -86,8 +87,16 @@ defmodule JourDashWeb.Live.Trip.Index do
       socket
       |> assign(:expanded?, expanding?)
       |> assign(:introspection, introspection)
+      |> assign(:introspection_expanded?, if(expanding?, do: socket.assigns.introspection_expanded?, else: false))
 
     {:noreply, socket}
+  end
+
+  def handle_event("on_introspection_toggle_click", _params, socket) do
+    expanding? = not socket.assigns.introspection_expanded?
+    Logger.info("on_introspection_toggle_click: #{if expanding?, do: "expanding", else: "collapsing"}")
+
+    {:noreply, assign(socket, :introspection_expanded?, expanding?)}
   end
 
   def handle_event("on_pickup_item_button_click", _params, socket) do
@@ -148,7 +157,7 @@ defmodule JourDashWeb.Live.Trip.Index do
 
   def load_trip_to_socket_assigns(socket, trip) when trip != nil do
     Logger.debug("#{trip}: Loading trip to socket assigns")
-    trip_values = Journey.load(trip) |> Journey.values(include_unset_as_nil: true)
+    trip_values = Journey.values(trip, include_unset_as_nil: true)
 
     introspection =
       if socket.assigns.expanded?,
@@ -171,6 +180,7 @@ defmodule JourDashWeb.Live.Trip.Index do
           trip={@trip}
           expanded?={@expanded?}
           introspection={@introspection}
+          introspection_expanded?={@introspection_expanded?}
         />
       </div>
     </div>
