@@ -77,7 +77,8 @@ defmodule JourDash.Trip.Graph do
             ]
           ),
           &Computations.current_activity_name/1,
-          f_on_save: &PubSubNotifications.broadcast_current_activity_update/2
+          f_on_save: &PubSubNotifications.broadcast_current_activity_update/2,
+          keep_latest_completed_computations: 10
         ),
 
         # Collects payment upon delivery completion.
@@ -143,7 +144,8 @@ defmodule JourDash.Trip.Graph do
         tick_recurring(
           :time_simulation,
           unblocked_when(:payment_collection, fn x -> not provided?(x) end),
-          fn _ -> {:ok, System.system_time(:second) + 6} end
+          fn _ -> {:ok, System.system_time(:second) + 6} end,
+          keep_latest_completed_computations: 10
         ),
         # Generates a simulated GPS reading on every tick and stores it
         # in :location_driver.
@@ -152,7 +154,8 @@ defmodule JourDash.Trip.Graph do
           [:time_simulation],
           &Computations.new_driver_simulated_gps_location/1,
           mutates: :location_driver,
-          update_revision_on_change: true
+          update_revision_on_change: true,
+          keep_latest_completed_computations: 10
         )
       ]
     )

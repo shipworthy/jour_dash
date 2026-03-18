@@ -8,6 +8,8 @@ defmodule JourDashWeb.Live.Components.TC do
   attr :trip_values, :map, required: true
   attr :trip, :string, required: true
   attr :expanded?, :boolean, required: true
+  attr :introspection, :string, default: nil
+  attr :introspection_expanded?, :boolean, default: false
 
   def render(assigns) do
     ~H"""
@@ -31,6 +33,8 @@ defmodule JourDashWeb.Live.Components.TC do
           trip_values={@trip_values}
           expanded?={@expanded?}
           time_zone={@time_zone}
+          introspection={@introspection}
+          introspection_expanded?={@introspection_expanded?}
         />
       </div>
     </div>

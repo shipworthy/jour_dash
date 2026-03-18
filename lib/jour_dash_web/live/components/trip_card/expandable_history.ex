@@ -29,6 +29,23 @@ defmodule JourDashWeb.Live.Components.TC.ExpandableHistory do
         </div>
       <% end %>
     </div>
+
+    <div
+      :if={@introspection != nil and @expanded?}
+      id={"trip-card-introspection-#{@trip}-id"}
+      class="border-t-1 my-3 pt-3"
+    >
+      <div
+        phx-click="on_introspection_toggle_click"
+        class="cursor-pointer flex items-center gap-2 text-sm font-mono"
+      >
+        <span>Introspection</span>
+        <.icon :if={!@introspection_expanded?} name="hero-chevron-down" class="size-4" />
+        <.icon :if={@introspection_expanded?} name="hero-chevron-up" class="size-4" />
+      </div>
+      <pre :if={@introspection_expanded?} class="whitespace-pre-wrap break-words mt-2 text-xs">iex&gt; Journey.Tools.introspect("{@trip}") |&gt; IO.puts()
+    {@introspection}</pre>
+    </div>
     """
   end
 end

@@ -149,7 +149,7 @@ defmodule JourDashWeb.Live.TripCompletionTest do
       assert rating_reminder_html =~ "rate this"
 
       # Step 16: Verify final state via Journey API
-      values = trip_id |> Journey.load() |> Journey.values()
+      values = Journey.values(trip_id)
       assert values.dropped_off? == true
       assert values.payment_collection != nil
       assert values.rating_reminder != nil
