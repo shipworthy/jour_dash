@@ -8,7 +8,7 @@ defmodule JourDash.Trip.PubSubNotifications do
 
   require Logger
 
-  def broadcast_current_activity_update(trip_id, {:ok, new_activity}) do
+  def broadcast_current_activity_update(trip_id, _node_name, {:ok, new_activity}) do
     Logger.debug("#{trip_id}: current_activity updated, new activity: #{new_activity}")
 
     Phoenix.PubSub.broadcast(
@@ -20,7 +20,7 @@ defmodule JourDash.Trip.PubSubNotifications do
     {:ok, "new activity notified"}
   end
 
-  def broadcast_trip_completed(trip_id, {:ok, trip_completed_at}) do
+  def broadcast_trip_completed(trip_id, _node_name, {:ok, trip_completed_at}) do
     Logger.debug("[#{trip_id}] trip_completed_at: #{trip_completed_at}")
 
     Phoenix.PubSub.broadcast(
@@ -34,6 +34,7 @@ defmodule JourDash.Trip.PubSubNotifications do
 
   def broadcast_trip_history_update(
         trip_id,
+        _node_name,
         {:ok, [%{"node" => node, "value" => value} | _older_history]} =
           updated_history
       ) do
