@@ -43,7 +43,7 @@ defmodule JourDash.MixProject do
       {:floki, "~> 0.38.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:tzdata, "~> 1.1"},
-      {:journey, "~> 0.10.47"},
+      {:journey, "~> 0.10.53"},
       {:phoenix, "~> 1.8.2"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.13"},
