@@ -77,7 +77,7 @@ defmodule JourDash.Trip.Graph do
             ]
           ),
           &Computations.current_activity_name/1,
-          f_on_save: &PubSubNotifications.broadcast_current_activity_update/2,
+          f_on_save: &PubSubNotifications.broadcast_current_activity_update/3,
           keep_latest_completed_computations: 10
         ),
 
@@ -99,7 +99,7 @@ defmodule JourDash.Trip.Graph do
           :trip_completed_at,
           [:payment_collection],
           fn _ -> {:ok, System.system_time(:second)} end,
-          f_on_save: &PubSubNotifications.broadcast_trip_completed/2
+          f_on_save: &PubSubNotifications.broadcast_trip_completed/3
         ),
 
         # Schedules a reminder for the customer to rate the trip if
@@ -135,7 +135,7 @@ defmodule JourDash.Trip.Graph do
               {:rating_reminder, &provided?/1}
             ]
           ),
-          f_on_save: &PubSubNotifications.broadcast_trip_history_update/2
+          f_on_save: &PubSubNotifications.broadcast_trip_history_update/3
         ),
 
         # GPS simulation: providing `:location_driver` updates.
