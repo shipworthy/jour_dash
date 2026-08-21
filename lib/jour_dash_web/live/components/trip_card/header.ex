@@ -23,8 +23,7 @@ defmodule JourDashWeb.Live.Components.TC.Header do
             <span
               :if={@trip_values.trip_completed_at == nil}
               class="status status-success mx-1 status-lg animate-pulse"
-            >
-            </span>
+            ></span>
             <span
               :if={@trip_values.dropped_off? == true}
               id={"dropped-off-#{@trip}-id"}

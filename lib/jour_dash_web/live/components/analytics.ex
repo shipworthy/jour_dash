@@ -10,8 +10,7 @@ defmodule JourDashWeb.Live.Components.Analytics do
         <div class="py-1">
           <div id="deliveries-analytics-id" class="font-mono py-2">
             <div class="">
-              <span :if={@trip_count_in_progress > 0} class="status status-success animate-pulse">
-              </span>
+              <span :if={@trip_count_in_progress > 0} class="status status-success animate-pulse"></span>
               <span :if={@trip_count_in_progress <= 0} class="">●</span>
               <span class="font-mono text-lg animate-pulse inline-block -scale-x-100">🚗</span>
               in progress: <span class="font-mono badge badge-info">{@trip_count_in_progress}</span>
