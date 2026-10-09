@@ -81,8 +81,8 @@ config :jour_dash, JourDashWeb.Endpoint,
 config :jour_dash, dev_routes: true
 
 config :logger, level: :info
-# Do not include metadata nor timestamps in development logs
-config :logger, :default_formatter, format: "[$level] $message\n"
+# Include timestamps, but no metadata, in development logs
+config :logger, :default_formatter, format: "$time [$level] $message\n"
 config :journey, log_level: :warning
 
 # Set a higher stacktrace during development. Avoid configuring such

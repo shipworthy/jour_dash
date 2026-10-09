@@ -56,8 +56,4 @@ defmodule JourDash.Trip do
       delivery_price_cents: delivery_price_cents
     })
   end
-
-  def list() do
-    Journey.list_executions(graph_name: Graph.name(), sort_by: [created_at: :desc], limit: 100)
-  end
 end
