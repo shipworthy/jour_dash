@@ -67,6 +67,11 @@ defmodule JourDash.Trip.Computations do
         {:ok, location_driver}
 
       true ->
+        Logger.info(
+          "[#{trip_values.execution_id}]: driver advancing from #{location_driver} to #{location_driver + 1} " <>
+            "(pickup: #{location_pickup}, dropoff: #{location_dropoff})"
+        )
+
         {:ok, location_driver + 1}
     end
   end

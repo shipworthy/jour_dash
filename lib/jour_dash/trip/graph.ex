@@ -154,6 +154,7 @@ defmodule JourDash.Trip.Graph do
           [:time_simulation],
           &Computations.new_driver_simulated_gps_location/1,
           mutates: :location_driver,
+          f_on_save: &PubSubNotifications.broadcast_driver_location_update/3,
           update_revision_on_change: true,
           keep_latest_completed_computations: 10
         )

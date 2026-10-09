@@ -43,6 +43,7 @@ defmodule JourDashWeb.Live.Trip.Index do
     if trip != nil do
       :ok = Phoenix.PubSub.subscribe(JourDash.PubSub, "current_activity_update_#{trip}")
       :ok = Phoenix.PubSub.subscribe(JourDash.PubSub, "history_update_#{trip}")
+      :ok = Phoenix.PubSub.subscribe(JourDash.PubSub, "driver_location_update_#{trip}")
     end
 
     socket
@@ -62,6 +63,19 @@ defmodule JourDashWeb.Live.Trip.Index do
       |> load_trip_to_socket_assigns(trip_id)
 
     {:noreply, socket}
+  end
+
+  def handle_info({:driver_location_changed, trip_id, location_driver}, socket) do
+    Logger.debug("[#{trip_id}]: :driver_location_changed new location: #{location_driver}")
+
+    # The GPS mutate node fires on every tick, including ticks where the driver is
+    # parked. Skip the reload when the location we already have is current, so
+    # parked ticks cost no query and no re-render.
+    if socket.assigns.trip_values.location_driver == location_driver do
+      {:noreply, socket}
+    else
+      {:noreply, load_trip_to_socket_assigns(socket, trip_id)}
+    end
   end
 
   def handle_info({:history_changed, trip_id, _updated_history}, socket) do

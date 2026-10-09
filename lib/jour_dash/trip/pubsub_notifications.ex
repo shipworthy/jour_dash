@@ -20,6 +20,18 @@ defmodule JourDash.Trip.PubSubNotifications do
     {:ok, "new activity notified"}
   end
 
+  def broadcast_driver_location_update(trip_id, _node_name, {:ok, location_driver}) do
+    Logger.debug("[#{trip_id}]: driver location updated: #{location_driver}")
+
+    Phoenix.PubSub.broadcast(
+      JourDash.PubSub,
+      "driver_location_update_#{trip_id}",
+      {:driver_location_changed, trip_id, location_driver}
+    )
+
+    {:ok, "driver location notified"}
+  end
+
   def broadcast_trip_completed(trip_id, _node_name, {:ok, trip_completed_at}) do
     Logger.debug("[#{trip_id}] trip_completed_at: #{trip_completed_at}")
 
