@@ -144,7 +144,7 @@ defmodule JourDash.Trip.Graph do
         tick_recurring(
           :time_simulation,
           unblocked_when(:payment_collection, fn x -> not provided?(x) end),
-          fn _ -> {:ok, System.system_time(:second) + 6} end,
+          fn _ -> {:ok, System.system_time(:second) + 5} end,
           keep_latest_completed_computations: 10
         ),
         # Generates a simulated GPS reading on every tick and stores it
