@@ -47,7 +47,7 @@ Everything about a delivery lives in one Journey execution of the graph defined 
 Node flow, in dependency order:
 
 - **Inputs**: `location_driver`, `location_pickup`, `location_dropoff`, `item_to_deliver`, `delivery_price_cents` (set at start), then `picked_up?`, `handed_off?`, `dropped_off?`, `rating` (set later by the UI).
-- **GPS simulation**: `time_simulation` is a `tick_recurring` (every 6s) that stays active until `payment_collection` exists. It unblocks the `mutate` node `driver_location_current_update`, which advances `location_driver` by one step (`mutates: :location_driver`).
+- **GPS simulation**: `time_simulation` is a `tick_recurring` (every 5s) that stays active until `payment_collection` exists. It unblocks the `mutate` node `driver_location_current_update`, which advances `location_driver` by one step (`mutates: :location_driver`).
 - **`current_activity`** (compute): recomputed whenever the driver location or any flag changes. Produces labels like `driving_to_pickup`, `waiting_for_item`, `driving_to_dropoff`, `waiting_for_customer`, `handed_off`, `dropped_off`, `payment_collected`. The UI buttons key off these strings.
 - **`payment_collection`** → **`trip_completed_at`**: fire once `handed_off?` or `dropped_off?` is true. `trip_completed_at != nil` is the UI's "done" signal.
 - **`rating_reminder_timer`** (`tick_once`, +10s after payment) → **`rating_reminder`** (compute, only if `rating` is still unset).
