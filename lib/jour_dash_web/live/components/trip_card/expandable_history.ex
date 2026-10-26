@@ -2,7 +2,6 @@ defmodule JourDashWeb.Live.Components.TC.ExpandableHistory do
   @moduledoc false
 
   use JourDashWeb, :html
-  require Logger
 
   def render(assigns) do
     ~H"""

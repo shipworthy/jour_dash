@@ -2,7 +2,6 @@ defmodule JourDashWeb.Live.Components.TC do
   @moduledoc false
 
   use JourDashWeb, :html
-  require Logger
 
   attr :time_zone, :string, required: true
   attr :trip_values, :map, required: true

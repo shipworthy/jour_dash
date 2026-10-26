@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 JourDash is a Phoenix 1.8 LiveView demo of a food delivery service, built to showcase the Journey durable-workflow library. Each delivery trip is a Journey execution; the UI is a reactive view over Journey state. A live instance runs at https://jourdash.gojourney.dev.
 
-Toolchain: Elixir 1.19.3 / OTP 28.2 (see `.tool-versions`). Postgres 16 is required.
+Toolchain: Elixir 1.20.4 / OTP 28.5 (see `.tool-versions`). Postgres 16 is required.
 
 ## Common Commands
 
