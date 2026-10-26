@@ -27,7 +27,6 @@ defmodule JourDash.Trip.Graph do
   import Journey.Node
   import Journey.Node.Conditions
   import Journey.Node.UpstreamDependencies
-  require Logger
 
   alias JourDash.Trip.Computations
   alias JourDash.Trip.PubSubNotifications

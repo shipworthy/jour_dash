@@ -68,7 +68,6 @@ defmodule JourDashWeb.Live.Components.Analytics do
         <div :if={@view_analytics}>
           <div class="text-sm font-mono bg-base-100 w-full p-1">(refreshed on page reload)</div>
           <pre
-            :if={@view_analytics}
             id="analytics-id"
             class="border-1 p-3 rounded-md my-2 bg-base-200 whitespace-pre-wrap break-words"
           >{@analytics}</pre>

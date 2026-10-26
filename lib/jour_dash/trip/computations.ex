@@ -40,7 +40,7 @@ defmodule JourDash.Trip.Computations do
       location_driver < location_pickup ->
         {:ok, "driving_to_pickup"}
 
-      location_driver >= location_pickup and !picked_up? ->
+      true ->
         {:ok, "waiting_for_item"}
     end
   end
